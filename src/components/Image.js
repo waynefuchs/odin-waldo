@@ -1,14 +1,17 @@
 import { useId } from "react";
+import Crosshair from "./Crosshair";
 import "./Image.css";
 
 function Image(props) {
   const id = useId();
 
   const moveCrosshair = (target, pixel) => {
-    const crosshair = document.getElementById(id);
+    const crosshairId = `crosshair-${id}`;
+    const crosshair = document.getElementById(crosshairId);
     pixel.x -= crosshair.offsetWidth / 2;
     pixel.y -= crosshair.offsetHeight / 2;
 
+    crosshair.style.visibility = "visible";
     crosshair.style.setProperty("left", `${pixel.x}px`, null);
     crosshair.style.setProperty("top", `${pixel.y}px`, null);
   };
@@ -48,7 +51,7 @@ function Image(props) {
 
   return (
     <>
-      <div id={id} className="crosshair"></div>
+      <Crosshair id={id} />
       <img
         className="image-map"
         src={props.src}
