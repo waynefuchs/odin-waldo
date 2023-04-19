@@ -1,5 +1,5 @@
 import "./App.css";
-import Image from "./Image";
+import Image from "./components/Image";
 
 function App() {
   return (
@@ -22,6 +22,7 @@ function App() {
         https://www.etsy.com/shop/SRHillustration 
         https://www.instagram.com/srh_illustration/
         */}
+
         <Image src="images/xzom3ygdf2ua1.png" alt="hmm" />
       </main>
 
