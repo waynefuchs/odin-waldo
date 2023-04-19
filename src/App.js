@@ -10,7 +10,19 @@ function App() {
 
       <main>
         <p>main content</p>
-        <Image />
+
+        {/* 
+
+        Octapus
+        Viking
+        Unlikely Robbery
+
+        Image By SRHillustration
+        https://www.reddit.com/r/wimmelbilder/comments/12n75ye/midnight_metropolis_digital_by_me/
+        https://www.etsy.com/shop/SRHillustration 
+        https://www.instagram.com/srh_illustration/
+        */}
+        <Image src="images/xzom3ygdf2ua1.png" alt="hmm" />
       </main>
 
       <footer>

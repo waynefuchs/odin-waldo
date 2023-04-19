@@ -1,0 +1,54 @@
+:root {
+  --crosshairWidth: 60px;
+  --crosshairThickness: 6px;
+  --reticleThickness: 2px;
+  --crossFillColor: rgba(255, 0, 0, 0.4);
+  --crossStrokeColor: rgba(0, 255, 0, 1);
+}
+
+.crosshair {
+  pointer-events: none;
+  background-color: var(--crossFillColor);
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  height: var(--crosshairWidth);
+  width: var(--crosshairWidth);
+  margin: 0;
+  padding: 0;
+
+  border: var(--crosshairThickness) solid var(--crossStrokeColor);
+  border-radius: 50%;
+}
+
+.crosshair::before,
+.crosshair::after {
+  content: "";
+  background: black;
+  position: absolute;
+}
+
+.crosshair::before {
+  position: absolute;
+  background: var(--crossStrokeColor);
+  height: calc(var(--reticleThickness) / 2);
+  width: 100%;
+  top: calc((var(--crosshairWidth) - var(--reticleThickness) / 2) / 2);
+}
+
+.crosshair::after {
+  position: absolute;
+  background: var(--crossStrokeColor);
+  width: calc(var(--reticleThickness) / 2);
+  height: 100%;
+  left: calc((var(--crosshairWidth) - var(--reticleThickness) / 2) / 2);
+}
+
+.image-map {
+  position: absolute;
+  /* top: 0;
+  left: 0; */
+  width: 100%;
+  overflow: hidden;
+}
