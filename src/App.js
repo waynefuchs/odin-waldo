@@ -2,8 +2,9 @@ import "./style/Colors.css";
 import "./style/App.css";
 import Image from "./components/Image";
 
-function hiddenObject(label, x, y) {
-  return { label, x, y };
+// Generate an object; eventually this will come from the database
+function hiddenObject(id, label, x, y) {
+  return { id, label, x, y };
 }
 
 function App() {
@@ -11,9 +12,9 @@ function App() {
     src: "images/xzom3ygdf2ua1.png",
     alt: "A scene containing many buildings, vehicles, monsters, and events",
     search: [
-      hiddenObject("Stick em' up!", 562, 950),
-      hiddenObject("Octapus", 1740, 1194),
-      hiddenObject("Viking", 394, 1187),
+      hiddenObject("aaa", "Stick em' up!", 562, 950),
+      hiddenObject("aab", "Octopus", 1740, 1194),
+      hiddenObject("aac", "Viking", 394, 1187),
     ],
   };
 
