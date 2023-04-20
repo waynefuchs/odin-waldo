@@ -1,18 +1,31 @@
-import "./App.css";
+import "./style/Colors.css";
+import "./style/App.css";
 import Image from "./components/Image";
 
+function hiddenObject(label, x, y) {
+  return { label, x, y };
+}
+
 function App() {
+  const data = {
+    src: "images/xzom3ygdf2ua1.png",
+    alt: "A scene containing many buildings, vehicles, monsters, and events",
+    search: [
+      hiddenObject("Stick em' up!", 562, 950),
+      hiddenObject("Octapus", 1740, 1194),
+      hiddenObject("Viking", 394, 1187),
+    ],
+  };
+
   return (
     <>
       <header>
         <h1>Welcome</h1>
+        <img src="./logo192.png" alt="blah" />
       </header>
 
       <main>
-        <p>main content</p>
-
         {/* 
-
         Octapus
         Viking
         Unlikely Robbery
@@ -23,7 +36,9 @@ function App() {
         https://www.instagram.com/srh_illustration/
         */}
 
-        <Image src="images/xzom3ygdf2ua1.png" alt="hmm" />
+        {/* Pull this from the database */}
+
+        <Image data={data} />
       </main>
 
       <footer>
