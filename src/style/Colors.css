@@ -1,0 +1,14 @@
+:root {
+  /* UI Colors */
+  --c-light: #ffffff;
+  --c-mid: #2f3256ff;
+  --c-dark: #1a153aff;
+  --c-1a: #315a76ff;
+  --c-1b: #113254;
+  --c-2a: #97485bff;
+  --c-2b: #38183aff;
+
+  /* Crosshair Colors */
+  --crossFillColor: rgba(255, 0, 0, 0.4);
+  --crossStrokeColor: rgba(0, 255, 0, 1);
+}

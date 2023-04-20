@@ -1,0 +1,30 @@
+:root {
+  --border: 4px;
+}
+
+.App {
+  text-align: center;
+}
+
+header {
+  pointer-events: none;
+  position: sticky;
+  top: 0;
+  display: flex;
+  flex-direction: row;
+}
+
+header > img {
+  pointer-events: all;
+}
+
+body {
+  background-color: var(--c-dark);
+  color: var(--c-light);
+}
+
+main {
+  max-width: 100vw;
+  overflow-x: hidden;
+  overflow-y: auto;
+}

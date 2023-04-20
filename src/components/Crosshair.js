@@ -1,4 +1,4 @@
-import "./Crosshair.css";
+import "../style/Crosshair.css";
 
 function Crosshair(props) {
   const id = `crosshair-${props.id}`;

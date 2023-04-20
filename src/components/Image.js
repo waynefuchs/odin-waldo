@@ -1,6 +1,10 @@
 import { useId } from "react";
+
 import Crosshair from "./Crosshair";
-import "./Image.css";
+import PopupSelection from "./PopupSelection";
+
+import "../style/Colors.css";
+import "../style/Image.css";
 
 function Image(props) {
   const id = useId();
@@ -49,13 +53,15 @@ function Image(props) {
     moveCrosshair(e.target, positionInDocument);
   };
 
+  // The Crosshair and Image go together
   return (
     <>
       <Crosshair id={id} />
+      <PopupSelection search={props.data.search} id={id} />
       <img
         className="image-map"
-        src={props.src}
-        alt={props.alt}
+        src={props.data.src}
+        alt={props.data.alt}
         onClick={getCoordinates}
       />
     </>

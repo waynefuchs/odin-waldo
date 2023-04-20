@@ -2,8 +2,6 @@
   --crosshairWidth: 60px;
   --crosshairThickness: 6px;
   --reticleThickness: 2px;
-  --crossFillColor: rgba(255, 0, 0, 0.4);
-  --crossStrokeColor: rgba(0, 255, 0, 1);
 }
 
 .crosshair {
