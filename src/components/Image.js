@@ -1,4 +1,4 @@
-import { useId } from "react";
+import { useId, useState } from "react";
 
 import Crosshair from "./Crosshair";
 import PopupSelection from "./PopupSelection";
@@ -6,25 +6,51 @@ import PopupSelection from "./PopupSelection";
 import "../style/Colors.css";
 import "../style/Image.css";
 
+const startingPosition = { x: -500, y: -500 };
+
 function Image(props) {
   const id = useId();
+  const [isCrosshairVisible, setCrosshairVisibility] = useState(false);
+  const [isObjectSelectionVisible, setObjectSelectionVisibility] =
+    useState(false);
+  const [positionInDocument, setPositionInDocument] = useState({
+    x: startingPosition.x,
+    y: startingPosition.y,
+  });
+  const [pixel, setPixel] = useState({
+    x: startingPosition.x,
+    y: startingPosition.y,
+  });
 
-  const moveCrosshair = (target, pixel) => {
-    const crosshairId = `crosshair-${id}`;
-    const crosshair = document.getElementById(crosshairId);
-    pixel.x -= crosshair.offsetWidth / 2;
-    pixel.y -= crosshair.offsetHeight / 2;
+  const setPopupSelectionPosition = (
+    screenClickPosition,
+    positionInDocument
+  ) => {
+    const popupSelectionId = `popup-${id}`;
+    const popupSelection = document.getElementById(popupSelectionId);
+    console.log(popupSelection);
 
-    crosshair.style.visibility = "visible";
-    crosshair.style.setProperty("left", `${pixel.x}px`, null);
-    crosshair.style.setProperty("top", `${pixel.y}px`, null);
+    const half = {
+      width: window.innerWidth / 2,
+      height: window.innerHeight / 2,
+    };
+
+    if (screenClickPosition.x > half.width) console.log("RIGHT");
+    else console.log("LEFT");
+    if (screenClickPosition.y > half.height) console.log("BOTTOM");
+    else console.log("TOP");
+
+    popupSelection.style.setProperty("left", `${positionInDocument.x}px`, null);
+    popupSelection.style.setProperty("top", `${positionInDocument.y}px`, null);
+
+    popupSelection.classList.add("visible");
   };
 
-  const getCoordinates = (e) => {
-    // This gets the coordinates of where the user clicked within the document
-    // this `positionInDocument` variable is the point within the document on
-    // which the crosshair should be placed
-    const positionInDocument = {
+  ////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////
+  const handleImageClick = (e) => {
+    setPositionInDocument({
       x:
         e.clientX +
         document.body.scrollLeft +
@@ -33,8 +59,19 @@ function Image(props) {
         e.clientY +
         document.body.scrollTop +
         document.documentElement.scrollTop,
-    };
+    });
+    setCrosshairVisibility(true);
+    return;
 
+    // I have enough information now to update the UI
+    // setCrosshairPosition(positionInDocument);
+    setPopupSelectionPosition(
+      { x: e.clientX, y: e.clientY },
+      positionInDocument
+    );
+
+    // Now I need to check if the guess was correct
+    //
     // The image is likely scaled, this variable stores that ratio
     const ratio = {
       x: e.target.naturalWidth / e.target.clientWidth,
@@ -49,20 +86,22 @@ function Image(props) {
       y: Math.floor((e.clientY - e.target.y) * ratio.y),
     };
     console.log("image pixel coordinates", pixel);
-
-    moveCrosshair(e.target, positionInDocument);
   };
 
   // The Crosshair and Image go together
   return (
     <>
-      <Crosshair id={id} />
+      <Crosshair
+        id={id}
+        coord={positionInDocument}
+        visible={isCrosshairVisible}
+      />
       <PopupSelection search={props.data.search} id={id} />
       <img
         className="image-map"
         src={props.data.src}
         alt={props.data.alt}
-        onClick={getCoordinates}
+        onClick={handleImageClick}
       />
     </>
   );

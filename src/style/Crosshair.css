@@ -19,6 +19,7 @@
   border: var(--crosshairThickness) solid var(--crossStrokeColor);
   border-radius: 50%;
   visibility: hidden;
+  transform: translate(-50%, -50%);
 }
 
 .crosshair::before,

@@ -6,7 +6,9 @@ function PopupSelection(props) {
   return (
     <ul className="popup" id={id}>
       {props.search.map((item) => (
-        <li>{item.label}</li>
+        <li key={item.id}>
+          <button>{item.label}</button>
+        </li>
       ))}
     </ul>
   );
