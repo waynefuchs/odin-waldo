@@ -15,6 +15,7 @@ function App() {
       hiddenObject("aaa", "Stick em' up!", 562, 950),
       hiddenObject("aab", "Octopus", 1740, 1194),
       hiddenObject("aac", "Viking", 394, 1187),
+      hiddenObject("aad", "Clock Tower", 594, 618),
     ],
   };
 
