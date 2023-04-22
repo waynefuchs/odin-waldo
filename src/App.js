@@ -3,8 +3,8 @@ import "./style/App.css";
 import Image from "./components/Image";
 
 // Generate an object; eventually this will come from the database
-function hiddenObject(id, label, x, y) {
-  return { id, label, x, y };
+function hiddenObject(id, label, x, y, distance) {
+  return { id, label, x, y, distance };
 }
 
 function App() {
@@ -12,10 +12,10 @@ function App() {
     src: "images/xzom3ygdf2ua1.png",
     alt: "A scene containing many buildings, vehicles, monsters, and events",
     search: [
-      hiddenObject("aaa", "Stick em' up!", 562, 950),
-      hiddenObject("aab", "Octopus", 1740, 1194),
-      hiddenObject("aac", "Viking", 394, 1187),
-      hiddenObject("aad", "Clock Tower", 594, 618),
+      hiddenObject("aaa", "Stick em' up!", 562, 950, 25),
+      hiddenObject("aab", "Octopus", 1740, 1194, 25),
+      hiddenObject("aac", "Viking", 394, 1187, 25),
+      hiddenObject("aad", "Clock Tower", 594, 618, 25),
     ],
   };
 
