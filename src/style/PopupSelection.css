@@ -11,6 +11,16 @@ ul.popup {
   border-radius: 1em;
   z-index: 1;
   visibility: hidden;
+  border: var(--border) solid var(--c-mid);
+}
+
+ul.popup.left {
+  transform: translateY(-75%)
+    translateX(calc((-100% - var(--crosshairWidth) / 2)));
+}
+
+ul.popup.right {
+  transform: translateY(-75%) translateX(calc(var(--crosshairWidth) / 2));
 }
 
 .popup > li {
@@ -33,4 +43,5 @@ ul.popup {
   border-radius: 1em;
   /* cursor: pointer; */
   /* outline: inherit; */
+  white-space: nowrap;
 }

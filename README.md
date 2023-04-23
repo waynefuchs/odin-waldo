@@ -18,6 +18,8 @@
 
 A "Hidden Object" searching game, similar to "Where's Waldo"
 
+![Main Site](.project/odin-waldo-main.png)
+
 ---
 
 # React Stuff:

@@ -6,25 +6,54 @@
   text-align: center;
 }
 
+body {
+  background-color: var(--c-dark);
+  color: var(--c-light);
+  margin: 0;
+}
+
 header {
+  background-color: var(--c-dark);
   pointer-events: none;
   position: sticky;
   top: 0;
   display: flex;
   flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 3em;
 }
 
 header > img {
   pointer-events: all;
 }
 
-body {
-  background-color: var(--c-dark);
-  color: var(--c-light);
-}
-
 main {
   max-width: 100vw;
   overflow-x: hidden;
   overflow-y: auto;
+}
+
+.search,
+.found {
+  display: flex;
+  flex-direction: row;
+  gap: 1em;
+  align-items: center;
+}
+
+.search > p {
+  color: var(--c-2a);
+}
+
+.found > p {
+  color: var(--c-1a);
+  text-decoration: line-through;
+}
+
+footer {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
 }
