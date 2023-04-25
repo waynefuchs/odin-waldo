@@ -147,14 +147,14 @@ function Image(props) {
         coord={positionInDocument}
         visible={isCrosshairVisible}
       />
-      <PopupSelection
+      {/* <PopupSelection
         id={id}
         search={props.search}
         coord={positionInDocument}
         right={hasClickedOnRightSide}
         visible={isObjectSelectionVisible}
         onClick={handleObjectButtonClick}
-      />
+      /> */}
       <img
         className="image-map"
         src={props.puzzle.src}

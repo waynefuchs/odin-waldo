@@ -1,9 +1,14 @@
 import { useEffect, useState } from "react";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 
+import GameHeader from "./components/GameHeader";
+import Image from "./components/Image";
+import GameFooter from "./components/GameFooter";
+
+import "./style/Font.css";
 import "./style/Colors.css";
 import "./style/App.css";
-import Image from "./components/Image";
+import "./style/Root.css";
 
 import { db } from "./firebase";
 
@@ -17,23 +22,44 @@ import { db } from "./firebase";
  * @returns A JSX object containing the entire application
  */
 function App() {
-  const [puzzle, setPuzzle] = useState({});
+  const [credit, setCredit] = useState({});
   const [message, setMessage] = useState("Welcome!");
   const [found, setFound] = useState([]);
-  const [search, setSearch] = useState([]);
+  const [timeObject, setTimeObject] = useState({ start: new Date() });
 
+  const [puzzle, setPuzzle] = useState({});
+  const [searchList, setSearchList] = useState([]);
+
+  /**
+   * Get the image information
+   * @param {String} id Correspond to Firestore puzzle id
+   */
   async function fetchPuzzle(id) {
     const puzzleRef = doc(db, "puzzles", id);
     const puzzleSnap = await getDoc(puzzleRef);
     const puzzleObj = Object.assign(puzzleSnap.data());
     setPuzzle(puzzleObj);
 
+    const creditObject = {};
+    if (puzzleObj.author) creditObject.author = puzzleObj.author;
+    if (puzzleObj.title) creditObject.title = puzzleObj.title;
+    if (puzzleObj.etsy) creditObject.etsy = puzzleObj.etsy;
+    if (puzzleObj.instagram) creditObject.instagram = puzzleObj.instagram;
+    if (puzzleObj.reddit) creditObject.reddit = puzzleObj.reddit;
+    setCredit(creditObject);
+  }
+
+  /**
+   * Get the search object data
+   * @param {String} id Correspond to the Firestore puzzle id
+   */
+  async function fetchSearch(id) {
     const searchRef = collection(db, `puzzles/${id}/search`);
     const searchSnap = await getDocs(searchRef);
     const searchObj = searchSnap.docs.map((doc) =>
       Object.assign({ id: doc.id }, doc.data())
     );
-    setSearch(searchObj);
+    setSearchList(searchObj);
   }
 
   /**
@@ -43,8 +69,8 @@ function App() {
    */
   function located(id) {
     setFound([...found, this.search.find((item) => item.id === id)]);
-    setSearch(this.search.filter((item) => item.id !== id));
-    if (search.length > 1) {
+    setSearchList(this.search.filter((item) => item.id !== id));
+    if (searchList.length > 1) {
       setMessage("Found it!");
     } else {
       setMessage("Congratulations!!! You win!");
@@ -57,44 +83,23 @@ function App() {
     // I originally intended to allow user selection between multiple puzzles
     const puzzleId = "7hh6mdB7qXJQDJBuEXFg";
     fetchPuzzle(puzzleId);
+    fetchSearch(puzzleId);
   }, []);
 
   return (
     <>
-      <header>
-        <h1>{message}</h1>
-
-        {search.length ? (
-          <div className="search">
-            <h2>Things to Find</h2>
-            {search.map((item) => (
-              <p key={item.id}>{item.label}</p>
-            ))}
-          </div>
-        ) : null}
-
-        {found.length ? (
-          <div className="found">
-            <h2>Found</h2>
-            {found.map((item) => (
-              <p key={item.id}>{item.label}</p>
-            ))}
-          </div>
-        ) : null}
-      </header>
+      <GameHeader searchList={searchList} timeObject={timeObject} />
 
       <main>
         <Image
           puzzle={puzzle}
-          search={search}
+          search={searchList}
           setMessage={setMessage}
           located={located}
         />
       </main>
 
-      <footer>
-        <p>Footer</p>
-      </footer>
+      <GameFooter credit={credit} />
     </>
   );
 }

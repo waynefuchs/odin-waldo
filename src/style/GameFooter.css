@@ -1,0 +1,26 @@
+footer {
+  font-size: xx-large;
+  margin: 0 clamp(var(--margin-min), var(--margin-ideal), var(--margin-max));
+
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+p.socials {
+  display: flex;
+  flex-direction: row;
+  gap: 0.5em;
+}
+
+a.socials {
+  text-decoration: none;
+  color: inherit;
+}
+
+/* Small devices */
+@media screen and (max-width: 767px) {
+  footer {
+    font-size: large;
+  }
+}

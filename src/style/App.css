@@ -1,7 +1,3 @@
-:root {
-  --border: 4px;
-}
-
 .App {
   text-align: center;
 }
@@ -10,22 +6,7 @@ body {
   background-color: var(--c-dark);
   color: var(--c-light);
   margin: 0;
-}
-
-header {
-  background-color: var(--c-dark);
-  pointer-events: none;
-  position: sticky;
-  top: 0;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 3em;
-}
-
-header > img {
-  pointer-events: all;
+  width: 100%;
 }
 
 main {
@@ -49,11 +30,4 @@ main {
 .found > p {
   color: var(--c-1a);
   text-decoration: line-through;
-}
-
-footer {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
 }
