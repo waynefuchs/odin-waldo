@@ -1,0 +1,80 @@
+.object-pop-out-modal {
+  background-color: var(--c-1a);
+  padding-left: var(--padding);
+  height: 100%;
+  position: fixed;
+  margin: 0;
+
+  display: flex;
+  flex-direction: row;
+  z-index: 1;
+
+  right: 0;
+  flex-direction: column;
+}
+
+ul.object-pop-out > li {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 1em;
+  padding: 0;
+  margin: 0;
+}
+
+.object-pop-out {
+  display: flex;
+  flex-direction: column;
+  list-style: none;
+  gap: 0.25em;
+  width: 100%;
+  padding: 0 2em;
+
+  margin-block-start: 0;
+  margin-inline-start: 0;
+  padding-inline-start: 0;
+}
+
+.object-pop-out-modal.hidden {
+  visibility: hidden;
+}
+
+.close-button {
+  margin: clamp(var(--margin-min), var(--margin-ideal), var(--margin-max));
+  background-color: var(--c-2a);
+  width: 2em;
+  height: 2em;
+  border-radius: 50%;
+  font-size: inherit;
+  border: var(--border) solid var(--c-light);
+  color: var(--c-light);
+
+  padding: 0;
+  cursor: pointer;
+  outline: inherit;
+  font: inherit;
+
+  align-self: end;
+}
+
+/* @media (orientation: landscape) { */
+/* Small devices */
+@media screen and (max-width: 767px) {
+  .object-pop-out-modal {
+    right: unset;
+    left: 0;
+    top: 0;
+    padding-left: 5%;
+    flex-direction: column;
+    height: auto;
+    width: 95%;
+  }
+
+  .object-pop-out {
+    align-self: start;
+  }
+
+  .close-button {
+    border: var(--border-phone) solid var(--c-light);
+  }
+}

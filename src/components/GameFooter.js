@@ -32,7 +32,7 @@ function GameFooter(props) {
   }
 
   function getSocials() {
-    const socials = ["reddit", "etsy", "instagram"];
+    const socials = ["etsy", "instagram", "reddit"];
     // icon({ name: "user", family: "classic", style: "solid" });
     return (
       <>

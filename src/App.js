@@ -2,8 +2,9 @@ import { useEffect, useState } from "react";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 
 import GameHeader from "./components/GameHeader";
-import Image from "./components/Image";
 import GameFooter from "./components/GameFooter";
+import Image from "./components/Image";
+import ObjectPopOut from "./components/ObjectPopOut";
 
 import "./style/Font.css";
 import "./style/Colors.css";
@@ -29,6 +30,8 @@ function App() {
 
   const [puzzle, setPuzzle] = useState({});
   const [searchList, setSearchList] = useState([]);
+
+  const [isObjectPopOutVisible, setIsObjectPopOutVisible] = useState(false);
 
   /**
    * Get the image information
@@ -88,7 +91,18 @@ function App() {
 
   return (
     <>
-      <GameHeader searchList={searchList} timeObject={timeObject} />
+      <GameHeader
+        searchList={searchList}
+        timeObject={timeObject}
+        isObjectPopOutVisible={isObjectPopOutVisible}
+        setIsObjectPopOutVisible={setIsObjectPopOutVisible}
+      />
+
+      <ObjectPopOut
+        searchList={searchList}
+        isVisible={isObjectPopOutVisible}
+        setIsVisible={setIsObjectPopOutVisible}
+      />
 
       <main>
         <Image
