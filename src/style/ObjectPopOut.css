@@ -73,6 +73,10 @@ ul.object-pop-out > li > button {
   font: inherit;
 }
 
+ul.object-pop-out > li > button:hover {
+  background-color: var(--c-2a);
+}
+
 ul.object-pop-out {
   padding-top: var(--margin-ideal);
 

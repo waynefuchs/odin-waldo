@@ -35,6 +35,11 @@ function HiddenObjectImage(props) {
   const handleImageClick = (e) => {
     if (isGameOver) return;
 
+    if (props.isCrosshairVisible) {
+      props.setIsCrosshairVisible(false);
+      return;
+    }
+
     // Set the x/y position within <body></body>
     setPositionInDocument({
       x:
