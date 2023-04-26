@@ -3,7 +3,7 @@ import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 
 import GameHeader from "./components/GameHeader";
 import GameFooter from "./components/GameFooter";
-import HiddenObjectGame from "./components/HiddenObjectGame";
+import HiddenObjectImage from "./components/HiddenObjectImage";
 import ObjectPopOut from "./components/ObjectPopOut";
 
 import "./style/Font.css";
@@ -105,7 +105,7 @@ function App() {
       />
 
       <main>
-        <HiddenObjectGame
+        <HiddenObjectImage
           puzzle={puzzle}
           search={searchList}
           setMessage={setMessage}

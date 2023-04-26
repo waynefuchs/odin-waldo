@@ -16,7 +16,7 @@ const startingPosition = { x: undefined, y: undefined };
  * @param props.alt.search An array of objects containing {`id`, `label`, `x`, `y`, `distance`}
  * @returns A JSX object containing the Image, a Crosshair, and the Hidden Object popup menu
  */
-function HiddenObjectGame(props) {
+function HiddenObjectImage(props) {
   const id = props.puzzle.id;
   const [isGameOver, setIsGameOver] = useState(false);
   const [isCrosshairVisible, setCrosshairVisibility] = useState(false); // A prop to pass down for crosshair visibility
@@ -165,4 +165,4 @@ function HiddenObjectGame(props) {
   );
 }
 
-export default HiddenObjectGame;
+export default HiddenObjectImage;
