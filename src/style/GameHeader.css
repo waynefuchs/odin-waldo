@@ -28,13 +28,13 @@ header {
   width: 2em;
   height: 2em;
   border-radius: 50%;
-  font-size: inherit;
   border: var(--border) solid var(--c-light);
   color: var(--c-light);
 
   padding: 0;
   cursor: pointer;
   outline: inherit;
+
   font: inherit;
 }
 

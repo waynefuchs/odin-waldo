@@ -31,6 +31,7 @@ function App() {
   const [puzzle, setPuzzle] = useState({});
   const [searchList, setSearchList] = useState([]);
 
+  const [isCrosshairVisible, setIsCrosshairVisible] = useState(false); // A prop to pass down for crosshair visibility
   const [isObjectPopOutVisible, setIsObjectPopOutVisible] = useState(false);
 
   /**
@@ -102,6 +103,8 @@ function App() {
         searchList={searchList}
         isVisible={isObjectPopOutVisible}
         setIsVisible={setIsObjectPopOutVisible}
+        isCrosshairVisible={isCrosshairVisible}
+        setIsCrosshairVisible={setIsCrosshairVisible}
       />
 
       <main>
@@ -110,6 +113,8 @@ function App() {
           search={searchList}
           setMessage={setMessage}
           located={located}
+          isCrosshairVisible={isCrosshairVisible}
+          setIsCrosshairVisible={setIsCrosshairVisible}
         />
       </main>
 

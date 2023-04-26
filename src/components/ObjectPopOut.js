@@ -15,15 +15,18 @@ function ObjectPopOut(props) {
       )}
     >
       <button className="close-button" onClick={handleClosePopOut}>
-        x
+        X
       </button>
       <h1>Search For</h1>
       <ul className="object-pop-out">
         {props.searchList
           ? props.searchList.map((i) => (
               <li key={i.id}>
-                <FontAwesomeIcon icon={icon({ name: "square" })} />
-                {i.label}
+                {props.isCrosshairVisible ? (
+                  <button>{i.label}</button>
+                ) : (
+                  <p>{i.label}</p>
+                )}
               </li>
             ))
           : null}

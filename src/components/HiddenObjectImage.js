@@ -8,43 +8,23 @@ import "../style/Image.css";
 
 const startingPosition = { x: undefined, y: undefined };
 
-/**
- * Component to create a hidden object puzzle image
- * @param props React state
- * @param props.src The url to the puzzle image
- * @param props.alt The alt text for the image
- * @param props.alt.search An array of objects containing {`id`, `label`, `x`, `y`, `distance`}
- * @returns A JSX object containing the Image, a Crosshair, and the Hidden Object popup menu
- */
 function HiddenObjectImage(props) {
   const id = props.puzzle.id;
   const [isGameOver, setIsGameOver] = useState(false);
-  const [isCrosshairVisible, setCrosshairVisibility] = useState(false); // A prop to pass down for crosshair visibility
   const [isObjectSelectionVisible, setObjectSelectionVisibility] =
-    useState(false); // A prop to pass down for the Object Selection menu popup
+    useState(false);
   const [hasClickedOnRightSide, setHasClickedOnRightSide] = useState(false); // A prop to pass down to let the Object Selection menu popup know which side of the crosshair to render the menu on
   const [positionInDocument, setPositionInDocument] = useState({
     x: startingPosition.x,
     y: startingPosition.y,
-  }); // A prop to assign an x/y "clicked" coordinate (within <body></body>)
+  });
   const [pixel, setPixel] = useState({
     x: startingPosition.x,
     y: startingPosition.y,
-  }); // A prop to assign an x/y pixel that was clicked on. This is used to determine if a guess is correct
+  });
 
-  /**
-   * Determine if the user clicked within some specified distance
-   * from the target in question.
-   * @param clickCoord Pixel coordinates where the user clicked
-   * @param clickCoord.x The 'x' component
-   * @param clickCoord.y The 'y' component
-   * @param hiddenObject Description of the hidden object
-   * @param hiddenObject.x The 'x' component
-   * @param hiddenObject.y The 'y' component
-   * @param hiddenObject.distance The maximum distance allowed between click and object
-   */
   const isClickCloseEnough = (clickCoord, hiddenObject) => {
-    // This is the pythagorean theorem (a^2 + b^2 = c^2), and I also square the hiddenObject.distance to avoid using Math.sqrt()
+    // pythagorean theorem
     return (
       (clickCoord.y - hiddenObject.y) ** 2 +
         (clickCoord.x - hiddenObject.x) ** 2 <
@@ -52,10 +32,6 @@ function HiddenObjectImage(props) {
     );
   };
 
-  /**
-   * Crosshair and menu set up; called when the image is clicked
-   * @param {Event} e The event, supplied by js
-   */
   const handleImageClick = (e) => {
     if (isGameOver) return;
 
@@ -92,14 +68,10 @@ function HiddenObjectImage(props) {
     setHasClickedOnRightSide(e.clientX > window.innerWidth / 2);
 
     // Add the 'visible' class to the crosshair and popup menu
-    setCrosshairVisibility(true);
-    setObjectSelectionVisibility(true);
+    props.setIsCrosshairVisible(true);
+    // setObjectSelectionVisibility(true);
   };
 
-  /**
-   * Handle a button click within the popup menu
-   * @param e The event, supplied by js
-   */
   const handleObjectButtonClick = (e) => {
     const objectId = e.target.id;
     const hiddenObject = props.search.find((item) => item.id === objectId);
@@ -109,29 +81,21 @@ function HiddenObjectImage(props) {
     if (isClickCloseEnough(pixel, hiddenObject)) {
       const gameOver = props.located(objectId);
       setIsGameOver(gameOver);
-      setCrosshairVisibility(false);
-      setObjectSelectionVisibility(false);
+      props.setIsCrosshairVisible(false);
+      // setObjectSelectionVisibility(false);
     } else {
       props.setMessage("Try again!");
     }
   };
 
-  /**
-   * Configure the escape button
-   */
   const escFunction = useCallback((event) => {
     if (event.keyCode === 27) {
       // ESC key
-      // hide the crosshair
-      // hide the 'hidden object popup menu'
-      setCrosshairVisibility(false);
+      props.setIsCrosshairVisible(false);
       setObjectSelectionVisibility(false);
     }
   }, []);
 
-  /**
-   * Register the escape button
-   */
   useEffect(() => {
     document.addEventListener("keydown", escFunction);
     return () => {
@@ -145,16 +109,9 @@ function HiddenObjectImage(props) {
       <Crosshair
         id={id}
         coord={positionInDocument}
-        visible={isCrosshairVisible}
+        visible={props.isCrosshairVisible}
       />
-      {/* <PopupSelection
-        id={id}
-        search={props.search}
-        coord={positionInDocument}
-        right={hasClickedOnRightSide}
-        visible={isObjectSelectionVisible}
-        onClick={handleObjectButtonClick}
-      /> */}
+
       <img
         className="image-map"
         src={props.puzzle.src}

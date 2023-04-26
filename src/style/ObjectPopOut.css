@@ -1,8 +1,30 @@
-.object-pop-out-modal {
-  background-color: var(--c-1a);
-  padding-left: var(--padding);
-  position: fixed;
+.close-button {
+  background-color: var(--c-2a);
+  width: 2em;
+  height: 2em;
+  border-radius: 50%;
+  border: var(--border) solid var(--c-light);
+  color: var(--c-light);
+
+  padding: 0;
   margin: 0;
+  cursor: pointer;
+  outline: inherit;
+
+  font: inherit;
+  font-size: xx-large;
+
+  align-self: end;
+}
+
+.object-pop-out-modal {
+  box-sizing: border-box;
+  margin: 0;
+  padding: clamp(var(--margin-min), var(--margin-ideal), var(--margin-max));
+  background-color: var(--c-1a);
+  position: fixed;
+
+  width: calc(18em);
 
   display: flex;
   flex-direction: row;
@@ -14,22 +36,51 @@
   transition: all 0.1s ease-out;
 }
 
+.object-pop-out-modal > h1 {
+  margin: 0;
+  padding: clamp(var(--margin-min), var(--margin-ideal), var(--margin-max));
+  font-size: xx-large;
+  position: absolute;
+}
+
 ul.object-pop-out > li {
   display: flex;
   flex-direction: row;
   align-items: center;
+  justify-content: center;
   gap: 1em;
   padding: 0;
   margin: 0;
 }
 
-.object-pop-out {
+ul.object-pop-out > li > p {
+  margin: 0;
+  padding: var(--border);
+}
+
+ul.object-pop-out > li > button {
+  background-color: var(--c-1b);
+  border-radius: 5px;
+  font-size: inherit;
+  border: none;
+  color: var(--c-light);
+
+  width: 95%;
+
+  padding: var(--border);
+  cursor: pointer;
+  outline: inherit;
+  font: inherit;
+}
+
+ul.object-pop-out {
+  padding-top: var(--margin-ideal);
+
   display: flex;
   flex-direction: column;
   list-style: none;
   gap: 0.25em;
   width: 100%;
-  padding: 0 2em;
 
   margin-block-start: 0;
   margin-inline-start: 0;
@@ -41,42 +92,34 @@ ul.object-pop-out > li {
   visibility: hidden;
 }
 
-.close-button {
-  margin: clamp(var(--margin-min), var(--margin-ideal), var(--margin-max));
-  background-color: var(--c-2a);
-  width: 2em;
-  height: 2em;
-  border-radius: 50%;
-  font-size: inherit;
-  border: var(--border) solid var(--c-light);
-  color: var(--c-light);
-
-  padding: 0;
-  cursor: pointer;
-  outline: inherit;
-  font: inherit;
-
-  align-self: end;
-}
-
 /* @media (orientation: landscape) { */
 /* Small devices */
 @media screen and (max-width: 767px) {
   .object-pop-out-modal {
     right: unset;
-    left: 0;
     top: 0;
-    padding-left: 5%;
     flex-direction: column;
-    height: auto;
-    width: 95%;
+    width: 100vw;
   }
 
-  .object-pop-out {
-    align-self: start;
+  .object-pop-out-modal > h1 {
+    padding: 0;
+    margin: clamp(var(--margin-min), var(--margin-ideal), var(--margin-max));
+    font-size: large;
+    height: var(--padding);
+
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
   }
 
   .close-button {
+    margin: clamp(var(--margin-min), var(--margin-ideal), var(--margin-max));
     border: var(--border-phone) solid var(--c-light);
+    font-size: large;
+  }
+
+  .object-pop-out-modal.hidden {
+    transform: translate(0, -100%);
   }
 }
