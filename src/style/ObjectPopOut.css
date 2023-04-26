@@ -1,7 +1,6 @@
 .object-pop-out-modal {
   background-color: var(--c-1a);
   padding-left: var(--padding);
-  height: 100%;
   position: fixed;
   margin: 0;
 
@@ -11,6 +10,8 @@
 
   right: 0;
   flex-direction: column;
+  transform: translate(0, 0);
+  transition: all 0.1s ease-out;
 }
 
 ul.object-pop-out > li {
@@ -36,6 +37,7 @@ ul.object-pop-out > li {
 }
 
 .object-pop-out-modal.hidden {
+  transform: translate(100%, 0);
   visibility: hidden;
 }
 
