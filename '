@@ -1,0 +1,20 @@
+Add object modal
+# Please enter the commit message for your changes. Lines starting
+# with '#' will be ignored, and an empty message aborts the commit.
+#
+# On branch main
+# Your branch is up to date with 'origin/main'.
+#
+# Changes to be committed:
+#	modified:   public/index.html
+#	modified:   src/App.js
+#	modified:   src/components/GameFooter.js
+#	modified:   src/components/GameHeader.js
+#	new file:   src/components/ObjectPopOut.js
+#	modified:   src/style/Crosshair.css
+#	modified:   src/style/GameHeader.css
+#	modified:   src/style/Image.css
+#	new file:   src/style/ObjectPopOut.css
+#	modified:   src/style/PopupSelection.css
+#	modified:   src/style/Root.css
+#
