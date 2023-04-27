@@ -39,9 +39,9 @@ function Stopwatch(props) {
   // This updates the component every 1000ms, prompting a redraw
   useEffect(() => {
     let timerInterval;
-    if (props.gameOver) {
+    if (props.isGameOver) {
       clearInterval(timerInterval);
-      setTimer(0);
+      props.setTimeObject({ ...props.timeObject, end: new Date() });
       return;
     }
 

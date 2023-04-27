@@ -6,42 +6,20 @@ import PopupSelection from "./PopupSelection";
 import "../style/Colors.css";
 import "../style/Image.css";
 
-const startingPosition = { x: undefined, y: undefined };
-
 function HiddenObjectImage(props) {
   const id = props.puzzle.id;
-  const [isGameOver, setIsGameOver] = useState(false);
-  const [isObjectSelectionVisible, setObjectSelectionVisibility] =
-    useState(false);
-  const [hasClickedOnRightSide, setHasClickedOnRightSide] = useState(false); // A prop to pass down to let the Object Selection menu popup know which side of the crosshair to render the menu on
-  const [positionInDocument, setPositionInDocument] = useState({
-    x: startingPosition.x,
-    y: startingPosition.y,
-  });
-  const [pixel, setPixel] = useState({
-    x: startingPosition.x,
-    y: startingPosition.y,
-  });
-
-  const isClickCloseEnough = (clickCoord, hiddenObject) => {
-    // pythagorean theorem
-    return (
-      (clickCoord.y - hiddenObject.y) ** 2 +
-        (clickCoord.x - hiddenObject.x) ** 2 <
-      hiddenObject.distance ** 2
-    );
-  };
-
   const handleImageClick = (e) => {
-    if (isGameOver) return;
+    if (props.isGameOver) return;
 
     if (props.isCrosshairVisible) {
       props.setIsCrosshairVisible(false);
+      props.setIsObjectPopOutVisible(false);
+      props.setPixel({ x: undefined, y: undefined });
       return;
     }
 
     // Set the x/y position within <body></body>
-    setPositionInDocument({
+    props.setPositionInDocument({
       x:
         e.clientX +
         document.body.scrollLeft +
@@ -52,13 +30,8 @@ function HiddenObjectImage(props) {
         document.documentElement.scrollTop,
     });
 
-    // Determine the 'pixel' that was clicked on
-    // I use this information to calculate the position of the image, and apply scaling to determine which pixel was clicked.
-    // e.client(X/Y): Where in the window the user clicked
-    // e.target.(x/y): The offset of the clicked element on the page. (eg: `top` and `left` values)
-    // e.target.natural(Height/Width): The number of pixels, as would be reported by photoshop
-    // e.target.client(Height/Width): The number of pixels currently being rendered by the browser
-    setPixel({
+    // Set the nearest x/y pixel that was clicked on
+    props.setPixel({
       x: Math.floor(
         (e.clientX - e.target.x) *
           (e.target.naturalWidth / e.target.clientWidth)
@@ -69,35 +42,16 @@ function HiddenObjectImage(props) {
       ),
     });
 
-    // determine whether the user clicked/tapped on the right or left side of the screen
-    setHasClickedOnRightSide(e.clientX > window.innerWidth / 2);
-
     // Add the 'visible' class to the crosshair and popup menu
     props.setIsCrosshairVisible(true);
-    // setObjectSelectionVisibility(true);
-  };
-
-  const handleObjectButtonClick = (e) => {
-    const objectId = e.target.id;
-    const hiddenObject = props.search.find((item) => item.id === objectId);
-    // Early out, if no object was found
-    if (!hiddenObject) return;
-
-    if (isClickCloseEnough(pixel, hiddenObject)) {
-      const gameOver = props.located(objectId);
-      setIsGameOver(gameOver);
-      props.setIsCrosshairVisible(false);
-      // setObjectSelectionVisibility(false);
-    } else {
-      props.setMessage("Try again!");
-    }
+    props.setIsObjectPopOutVisible(true);
   };
 
   const escFunction = useCallback((event) => {
     if (event.keyCode === 27) {
       // ESC key
       props.setIsCrosshairVisible(false);
-      setObjectSelectionVisibility(false);
+      props.setIsObjectPopOutVisible(false);
     }
   }, []);
 
@@ -113,7 +67,7 @@ function HiddenObjectImage(props) {
     <>
       <Crosshair
         id={id}
-        coord={positionInDocument}
+        coord={props.positionInDocument}
         visible={props.isCrosshairVisible}
       />
 

@@ -13,6 +13,17 @@ import "./style/Root.css";
 
 import { db } from "./firebase";
 
+const startingPosition = { x: undefined, y: undefined };
+
+const isClickCloseEnough = (clickCoord, hiddenObject) => {
+  // pythagorean theorem
+  return (
+    (clickCoord.y - hiddenObject.y) ** 2 +
+      (clickCoord.x - hiddenObject.x) ** 2 <
+    hiddenObject.distance ** 2
+  );
+};
+
 // Generate an object; eventually this will come from the database
 // function hiddenObject(id, label, x, y, distance) {
 //   return { id, label, x, y, distance };
@@ -33,6 +44,58 @@ function App() {
 
   const [isCrosshairVisible, setIsCrosshairVisible] = useState(false); // A prop to pass down for crosshair visibility
   const [isObjectPopOutVisible, setIsObjectPopOutVisible] = useState(false);
+
+  const [positionInDocument, setPositionInDocument] = useState({
+    x: undefined,
+    y: undefined,
+  });
+
+  const [pixel, setPixel] = useState({
+    x: startingPosition.x,
+    y: startingPosition.y,
+  });
+  const [isGameOver, setIsGameOver] = useState(false);
+
+  function guess(id) {
+    const hiddenObject = searchList.find((item) => item.id === id);
+    if (!hiddenObject) return;
+
+    if (isClickCloseEnough(pixel, hiddenObject)) {
+      // Player Guessed Correctly
+      setSearchList(
+        searchList.map((i) => {
+          if (i.id === hiddenObject.id) return { ...i, isFound: true };
+          return i;
+        })
+      );
+
+      clearCrosshair();
+
+      console.dir(searchList.filter((i) => i.isFound));
+      return;
+    }
+
+    // Guess was incorrect
+    console.log("Better luck next time.");
+  }
+
+  function checkIfPlayerWon() {
+    if (searchList.length === 0) return false;
+    if (isGameOver) return true;
+    if (searchList.filter((i) => i.isFound).length == searchList.length) {
+      // Game is over
+      console.dir(searchList);
+
+      setIsGameOver(true);
+      return true;
+    }
+    return false;
+  }
+
+  function clearCrosshair() {
+    setIsCrosshairVisible(false);
+    setPixel(startingPosition);
+  }
 
   /**
    * Get the image information
@@ -90,14 +153,21 @@ function App() {
     fetchSearch(puzzleId);
   }, []);
 
+  const myList = ["abc", "def", "ghi"];
+
   return (
     <>
+      <ul>{myList}</ul>
+      <div>fuck</div>
       <GameHeader
         searchList={searchList}
         timeObject={timeObject}
         isObjectPopOutVisible={isObjectPopOutVisible}
         setIsObjectPopOutVisible={setIsObjectPopOutVisible}
+        isGameOver={isGameOver}
       />
+
+      {checkIfPlayerWon() ? <h1>You win!</h1> : null}
 
       <ObjectPopOut
         searchList={searchList}
@@ -105,6 +175,7 @@ function App() {
         setIsVisible={setIsObjectPopOutVisible}
         isCrosshairVisible={isCrosshairVisible}
         setIsCrosshairVisible={setIsCrosshairVisible}
+        guess={guess}
       />
 
       <main>
@@ -115,6 +186,12 @@ function App() {
           located={located}
           isCrosshairVisible={isCrosshairVisible}
           setIsCrosshairVisible={setIsCrosshairVisible}
+          pixel={pixel}
+          setPixel={setPixel}
+          positionInDocument={positionInDocument}
+          setPositionInDocument={setPositionInDocument}
+          setIsObjectPopOutVisible={setIsObjectPopOutVisible}
+          isGameOver={isGameOver}
         />
       </main>
 

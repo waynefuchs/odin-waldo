@@ -1,11 +1,16 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
-import { icon } from "@fortawesome/fontawesome-svg-core/import.macro";
+// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+// import { useState } from "react";
+// import { icon } from "@fortawesome/fontawesome-svg-core/import.macro";
+import ItemGuess from "./ItemGuess";
 import "../style/ObjectPopOut.css";
 
 function ObjectPopOut(props) {
   function handleClosePopOut(e) {
     props.setIsVisible(false);
+  }
+
+  function handleGuess(e) {
+    props.guess(e.target.dataset.id);
   }
 
   return (
@@ -22,11 +27,11 @@ function ObjectPopOut(props) {
         {props.searchList
           ? props.searchList.map((i) => (
               <li key={i.id}>
-                {props.isCrosshairVisible ? (
-                  <button>{i.label}</button>
-                ) : (
-                  <p>{i.label}</p>
-                )}
+                <ItemGuess
+                  item={i}
+                  isCrosshairVisible={props.isCrosshairVisible}
+                  handleGuess={handleGuess}
+                />
               </li>
             ))
           : null}
