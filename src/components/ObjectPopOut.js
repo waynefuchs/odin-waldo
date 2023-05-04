@@ -4,32 +4,32 @@
 import ItemGuess from "./ItemGuess";
 import "../style/ObjectPopOut.css";
 
-function ObjectPopOut(props) {
-  function handleClosePopOut(e) {
-    props.setIsVisible(false);
-  }
-
+function ObjectPopOut({
+  searchList,
+  isCrosshairVisible,
+  isVisible,
+  onClose,
+  onMakeGuess,
+}) {
   function handleGuess(e) {
-    props.guess(e.target.dataset.id);
+    onMakeGuess(e.target.dataset.id);
   }
 
   return (
     <div
-      className={["object-pop-out-modal", props.isVisible ? "" : "hidden"].join(
-        " "
-      )}
+      className={["object-pop-out-modal", isVisible ? "" : "hidden"].join(" ")}
     >
-      <button className="close-button" onClick={handleClosePopOut}>
+      <button className="close-button" onClick={onClose}>
         X
       </button>
       <h1>Search For</h1>
       <ul className="object-pop-out">
-        {props.searchList
-          ? props.searchList.map((i) => (
+        {searchList
+          ? searchList.map((i) => (
               <li key={i.id}>
                 <ItemGuess
                   item={i}
-                  isCrosshairVisible={props.isCrosshairVisible}
+                  isCrosshairVisible={isCrosshairVisible}
                   handleGuess={handleGuess}
                 />
               </li>

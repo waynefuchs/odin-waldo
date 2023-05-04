@@ -1,15 +1,13 @@
 import { useEffect, useState } from "react";
 
-function Stopwatch(props) {
+import "../style/Stopwatch.css";
+
+function Stopwatch({ timeStart, timeEnd }) {
   // This timer variable is only for updating the timeObject display
   const [timer, setTimer] = useState(0);
 
-  /**
-   * @param {Date} start A Date object used at a starting point
-   * @returns A human readable stopwatch time string
-   */
-  const getTimeDisplay = (start) => {
-    let delta = Math.floor((new Date() - start) / 1000);
+  const getTimeDisplay = () => {
+    let delta = Math.floor((new Date() - timeStart) / 1000);
     let display = false;
 
     const days = Math.floor(delta / 86400);
@@ -37,16 +35,13 @@ function Stopwatch(props) {
   };
 
   // This updates the component every 1000ms, prompting a redraw
+  let timerInterval = undefined;
   useEffect(() => {
-    let timerInterval;
-    if (props.isGameOver) {
-      clearInterval(timerInterval);
-      props.setTimeObject({ ...props.timeObject, end: new Date() });
-      return;
-    }
+    if (timerInterval) clearInterval(timerInterval);
+    if (timeEnd) return;
 
     timerInterval = setInterval(() => {
-      setTimer((timer) => getTimeDisplay(props.timeObject.start));
+      setTimer((timer) => getTimeDisplay());
     }, 1000);
   });
 

@@ -1,0 +1,30 @@
+.count-button {
+  position: fixed;
+  top: 0;
+  right: 0;
+
+  background-color: var(--c-2a);
+  width: 2em;
+  height: 2em;
+  border-radius: 50%;
+  border: var(--border) solid var(--c-light);
+  color: var(--c-light);
+
+  padding: 0;
+  cursor: pointer;
+  outline: inherit;
+
+  font: inherit;
+  font-size: xx-large;
+}
+
+.count-button {
+  margin: clamp(var(--margin-min), var(--margin-ideal), var(--margin-max));
+}
+
+/* Small devices */
+@media screen and (max-width: 767px) {
+  .count-button {
+    border: var(--border-phone) solid var(--c-light);
+  }
+}

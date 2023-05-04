@@ -1,7 +1,12 @@
 import { useState, useCallback, useEffect } from "react";
+import { collection, doc, getDoc, getDocs } from "firebase/firestore";
 
 import Crosshair from "./Crosshair";
-// import PopupSelection from "./PopupSelection";
+import ObjectCounter from "./ObjectCounter";
+import ObjectPopOut from "./ObjectPopOut";
+import Stopwatch from "./Stopwatch";
+
+import { db } from "../firebase";
 
 import "../style/Colors.css";
 import "../style/Image.css";
@@ -19,8 +24,10 @@ const isClickCloseEnough = (clickCoord, hiddenObject) => {
   );
 };
 
-function Game({ id, puzzle }) {
+function Game({ puzzle }) {
   const [isGameOver, setIsGameOver] = useState(false);
+  const [timeStart, setTimeStart] = useState(new Date());
+  const [timeEnd, setTimeEnd] = useState(undefined);
   const [isCrosshairVisible, setIsCrosshairVisible] = useState(false);
   const [crosshairCoordinates, setCrosshairCoordinates] = useState(
     createCoordinateObject(undefined, undefined)
@@ -28,26 +35,53 @@ function Game({ id, puzzle }) {
   const [pixelCoordinates, setPixelCoordinates] = useState(
     createCoordinateObject(undefined, undefined)
   );
+  const [searchList, setSearchList] = useState([]);
+  const [isPopOutVisible, setIsPopOutVisible] = useState(false);
 
-  function disableCrosshair() {
-    setIsCrosshairVisible(false);
-    setCrosshairCoordinates(createCoordinateObject(undefined, undefined));
+  async function fetchSearch(id) {
+    const searchRef = collection(db, `puzzles/${id}/search`);
+    const searchSnap = await getDocs(searchRef);
+    const searchObj = searchSnap.docs.map((doc) =>
+      Object.assign({ id: doc.id }, doc.data())
+    );
+    setSearchList(searchObj);
+    console.log("Search List", searchObj);
   }
 
-  function enableCrosshair(coordinates) {
-    setIsCrosshairVisible(true);
-    setCrosshairCoordinates(coordinates);
+  useEffect(() => {
+    if (!puzzle?.id) return;
+    fetchSearch(puzzle?.id);
+  }, [puzzle?.id]);
+
+  function makeGuess(objectId) {
+    const hiddenObject = searchList.find((i) => i.id === objectId);
+    if (!hiddenObject) return;
+    console.log("Guessed", hiddenObject);
+    const isCorrect = isClickCloseEnough(pixelCoordinates, hiddenObject);
+
+    if (!isCorrect) {
+      console.log("FAILURE.");
+      return;
+    }
+
+    console.log("Success");
   }
 
   function calculateCrosshairCoordinates(e) {
     if (isGameOver) return;
 
     if (isCrosshairVisible) {
-      disableCrosshair();
+      setIsPopOutVisible(false);
+      setIsCrosshairVisible(false);
+      setCrosshairCoordinates(createCoordinateObject(undefined, undefined));
       return;
     }
 
-    const documentCoords = {
+    // Enable the pop-out menu
+    setIsPopOutVisible(true);
+
+    // Calculate x/y position to place crosshair
+    const documentCoordinates = {
       x:
         e.clientX +
         document.body.scrollLeft +
@@ -57,8 +91,10 @@ function Game({ id, puzzle }) {
         document.body.scrollTop +
         document.documentElement.scrollTop,
     };
-    enableCrosshair(documentCoords);
+    setIsCrosshairVisible(true);
+    setCrosshairCoordinates(documentCoordinates);
 
+    // Calcualte corresponding x/y pixel coordinates in image
     const pixelCoords = {
       x: Math.floor(
         (e.clientX - e.target.x) *
@@ -72,138 +108,41 @@ function Game({ id, puzzle }) {
     setPixelCoordinates(pixelCoords);
   }
 
-  return (
-    <>
-      <main>
-        <Crosshair
-          id={id}
-          isVisible={isCrosshairVisible}
-          coord={crosshairCoordinates}
-        />
+  function togglePopOut() {
+    setIsPopOutVisible(!isPopOutVisible);
+  }
 
-        <img
-          className="image-map"
-          src={puzzle.src}
-          alt={puzzle.alt}
-          onClick={calculateCrosshairCoordinates}
-        />
-      </main>
-    </>
+  return (
+    <div>
+      <Stopwatch
+        timeStart={timeStart}
+        timeEnd={timeEnd}
+        onClick={togglePopOut}
+      />
+      <ObjectCounter searchList={searchList} onClick={togglePopOut} />
+
+      <Crosshair
+        id={puzzle?.id}
+        isVisible={isCrosshairVisible}
+        coord={crosshairCoordinates}
+      />
+
+      <ObjectPopOut
+        searchList={searchList}
+        isVisible={isPopOutVisible}
+        isCrosshairVisible={isCrosshairVisible}
+        onMakeGuess={makeGuess}
+        onClose={togglePopOut}
+      />
+
+      <img
+        className="image-map"
+        src={puzzle.src}
+        alt={puzzle.alt}
+        onClick={calculateCrosshairCoordinates}
+      />
+    </div>
   );
 }
 
 export default Game;
-
-//////////////////////////////////////
-{
-  /* <GameHeader
-        searchList={searchList}
-        timeObject={timeObject}
-        isObjectPopOutVisible={isObjectPopOutVisible}
-        setIsObjectPopOutVisible={setIsObjectPopOutVisible}
-        isGameOver={isGameOver}
-      />
-
-      {checkIfPlayerWon() ? <h1>You win!</h1> : null}
-
-      <ObjectPopOut
-        searchList={searchList}
-        isVisible={isObjectPopOutVisible}
-        setIsVisible={setIsObjectPopOutVisible}
-        isCrosshairVisible={isCrosshairVisible}
-        setIsCrosshairVisible={setIsCrosshairVisible}
-        guess={guess}
-      />
-
-      <GameFooter credit={credit} /> */
-}
-
-//////////////////
-
-// const [message, setMessage] = useState("Welcome!");
-// const [found, setFound] = useState([]);
-// const [timeObject, setTimeObject] = useState({ start: new Date() });
-
-// const [isObjectPopOutVisible, setIsObjectPopOutVisible] = useState(false);
-
-// const [positionInDocument, setPositionInDocument] = useState({
-//   x: undefined,
-//   y: undefined,
-// });
-
-// const [isGameOver, setIsGameOver] = useState(false);
-
-// function guess(id) {
-//   const hiddenObject = searchList.find((item) => item.id === id);
-//   if (!hiddenObject) return;
-
-//   if (isClickCloseEnough(pixel, hiddenObject)) {
-//     // Player Guessed Correctly
-//     setSearchList(
-//       searchList.map((i) => {
-//         if (i.id === hiddenObject.id) return { ...i, isFound: true };
-//         return i;
-//       })
-//     );
-
-//     clearCrosshair();
-
-//     console.dir(searchList.filter((i) => i.isFound));
-//     return;
-//   }
-
-//   // Guess was incorrect
-//   console.log("Better luck next time.");
-// }
-
-// function checkIfPlayerWon() {
-//   if (searchList.length === 0) return false;
-//   if (isGameOver) return true;
-//   if (searchList.filter((i) => i.isFound).length == searchList.length) {
-//     // Game is over
-//     console.dir(searchList);
-
-//     setIsGameOver(true);
-//     return true;
-//   }
-//   return false;
-// }
-
-// function clearCrosshair() {
-//   setIsCrosshairVisible(false);
-//   setPixel(startingPosition);
-// }
-
-///////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////
-///////////////////////////////////////////////////////////////////////
-// function located(id) {
-//   setFound([...found, this.search.find((item) => item.id === id)]);
-//   setSearchList(this.search.filter((item) => item.id !== id));
-//   if (searchList.length > 1) {
-//     setMessage("Found it!");
-//   } else {
-//     setMessage("Congratulations!!! You win!");
-//     return true;
-//   }
-//   return false;
-// }
-
-// const id = props.puzzle.id;
-
-// const escFunction = useCallback((event) => {
-//   if (event.keyCode === 27) {
-//     // ESC key
-//     props.setIsCrosshairVisible(false);
-//     props.setIsObjectPopOutVisible(false);
-//   }
-// }, []);
-
-// useEffect(() => {
-//   document.addEventListener("keydown", escFunction);
-//   return () => {
-//     document.removeEventListener("keydown", escFunction);
-//   };
-// }, [escFunction]);
-
-// The Crosshair and Image go together
