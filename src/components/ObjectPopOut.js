@@ -1,6 +1,3 @@
-// import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-// import { useState } from "react";
-// import { icon } from "@fortawesome/fontawesome-svg-core/import.macro";
 import ItemGuess from "./ItemGuess";
 import "../style/ObjectPopOut.css";
 
@@ -15,6 +12,7 @@ function ObjectPopOut({
     onMakeGuess(e.target.dataset.id);
   }
 
+  if (!searchList) return null;
   return (
     <div
       className={["object-pop-out-modal", isVisible ? "" : "hidden"].join(" ")}
@@ -24,17 +22,15 @@ function ObjectPopOut({
       </button>
       <h1>Search For</h1>
       <ul className="object-pop-out">
-        {searchList
-          ? searchList.map((i) => (
-              <li key={i.id}>
-                <ItemGuess
-                  item={i}
-                  isCrosshairVisible={isCrosshairVisible}
-                  handleGuess={handleGuess}
-                />
-              </li>
-            ))
-          : null}
+        {searchList.map((item) => (
+          <li key={item.id}>
+            <ItemGuess
+              item={item}
+              isCrosshairVisible={isCrosshairVisible}
+              handleGuess={handleGuess}
+            />
+          </li>
+        ))}
       </ul>
     </div>
   );

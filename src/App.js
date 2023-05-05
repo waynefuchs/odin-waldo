@@ -28,7 +28,6 @@ function App() {
     const puzzleSnap = await getDoc(puzzleRef);
     const puzzleObj = Object.assign({ ...puzzleSnap.data(), id: puzzleRef.id });
     setPuzzle(puzzleObj);
-    console.log("Puzzle Object", puzzleObj);
   }
 
   useEffect(() => {

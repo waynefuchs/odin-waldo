@@ -1,12 +1,13 @@
 import { useState, useCallback, useEffect } from "react";
 import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { db } from "../firebase";
 
 import Crosshair from "./Crosshair";
+import HighscoreList from "./HighscoreList";
+import Messages from "./Messages";
 import ObjectCounter from "./ObjectCounter";
 import ObjectPopOut from "./ObjectPopOut";
 import Stopwatch from "./Stopwatch";
-
-import { db } from "../firebase";
 
 import "../style/Colors.css";
 import "../style/Image.css";
@@ -25,6 +26,8 @@ const isClickCloseEnough = (clickCoord, hiddenObject) => {
 };
 
 function Game({ puzzle }) {
+  //////////////////////////////////////////////////////////////////////////////
+  // Variable Definition
   const [isGameOver, setIsGameOver] = useState(false);
   const [timeStart, setTimeStart] = useState(new Date());
   const [timeEnd, setTimeEnd] = useState(undefined);
@@ -37,7 +40,10 @@ function Game({ puzzle }) {
   );
   const [searchList, setSearchList] = useState([]);
   const [isPopOutVisible, setIsPopOutVisible] = useState(false);
+  const [messages, setMessages] = useState([]);
 
+  //////////////////////////////////////////////////////////////////////////////
+  // Set-up
   async function fetchSearch(id) {
     const searchRef = collection(db, `puzzles/${id}/search`);
     const searchSnap = await getDocs(searchRef);
@@ -45,7 +51,6 @@ function Game({ puzzle }) {
       Object.assign({ id: doc.id }, doc.data())
     );
     setSearchList(searchObj);
-    console.log("Search List", searchObj);
   }
 
   useEffect(() => {
@@ -53,27 +58,34 @@ function Game({ puzzle }) {
     fetchSearch(puzzle?.id);
   }, [puzzle?.id]);
 
+  //////////////////////////////////////////////////////////////////////////////
+  // Functions
   function makeGuess(objectId) {
     const hiddenObject = searchList.find((i) => i.id === objectId);
     if (!hiddenObject) return;
-    console.log("Guessed", hiddenObject);
     const isCorrect = isClickCloseEnough(pixelCoordinates, hiddenObject);
 
+    setUIDefaults();
+
     if (!isCorrect) {
-      console.log("FAILURE.");
+      setMessages([
+        ...messages,
+        "That doesn't seem correct. Please try again!",
+      ]);
       return;
     }
 
-    console.log("Success");
+    setMessages([...messages, `You found the '${hiddenObject.label}' object!`]);
+    setSearchList(
+      searchList.map((i) => (i.id === objectId ? { ...i, isFound: true } : i))
+    );
   }
 
   function calculateCrosshairCoordinates(e) {
     if (isGameOver) return;
 
     if (isCrosshairVisible) {
-      setIsPopOutVisible(false);
-      setIsCrosshairVisible(false);
-      setCrosshairCoordinates(createCoordinateObject(undefined, undefined));
+      setUIDefaults();
       return;
     }
 
@@ -108,12 +120,26 @@ function Game({ puzzle }) {
     setPixelCoordinates(pixelCoords);
   }
 
+  function setUIDefaults() {
+    setIsPopOutVisible(false);
+    setIsCrosshairVisible(false);
+    setCrosshairCoordinates(createCoordinateObject(undefined, undefined));
+  }
+
   function togglePopOut() {
     setIsPopOutVisible(!isPopOutVisible);
   }
 
+  function removeMessage(index) {
+    setMessages(messages.filter((m, i) => i !== Number(index)));
+  }
+
   return (
     <div>
+      <Messages messages={messages} removeMessage={removeMessage} />
+
+      <HighscoreList />
+
       <Stopwatch
         timeStart={timeStart}
         timeEnd={timeEnd}
