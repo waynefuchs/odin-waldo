@@ -11,6 +11,8 @@ import Stopwatch from "./Stopwatch";
 
 import "../style/Colors.css";
 import "../style/Image.css";
+import GameOver from "./GameOver";
+import NewHighscore from "./NewHighscore";
 
 function createCoordinateObject(x, y) {
   return { x, y };
@@ -41,6 +43,7 @@ function Game({ puzzle }) {
   const [searchList, setSearchList] = useState([]);
   const [isPopOutVisible, setIsPopOutVisible] = useState(false);
   const [messages, setMessages] = useState([]);
+  const [highscoreOpen, highscoreSetOpen] = useState(false);
 
   //////////////////////////////////////////////////////////////////////////////
   // Set-up
@@ -53,6 +56,12 @@ function Game({ puzzle }) {
     setSearchList(searchObj);
   }
 
+  // Check to see if the player won every time "searchList" is updated
+  useEffect(() => {
+    handleWinCondition();
+  }, [searchList]);
+
+  // Handle fetching search data
   useEffect(() => {
     if (!puzzle?.id) return;
     fetchSearch(puzzle?.id);
@@ -60,6 +69,10 @@ function Game({ puzzle }) {
 
   //////////////////////////////////////////////////////////////////////////////
   // Functions
+  function addMessage(message) {
+    setMessages([...messages, message]);
+  }
+
   function makeGuess(objectId) {
     const hiddenObject = searchList.find((i) => i.id === objectId);
     if (!hiddenObject) return;
@@ -68,17 +81,27 @@ function Game({ puzzle }) {
     setUIDefaults();
 
     if (!isCorrect) {
-      setMessages([
-        ...messages,
-        "That doesn't seem correct. Please try again!",
-      ]);
+      addMessage("That doesn't seem correct. Please try again!");
       return;
     }
 
-    setMessages([...messages, `You found the '${hiddenObject.label}' object!`]);
+    addMessage(`You found the '${hiddenObject.label}' object!`);
     setSearchList(
       searchList.map((i) => (i.id === objectId ? { ...i, isFound: true } : i))
     );
+  }
+
+  function handleWinCondition() {
+    if (!searchList || searchList.length <= 0) return;
+    console.dir(searchList);
+    const stillLookingFor = searchList.filter((i) => !i.isFound);
+    if (stillLookingFor.length > 0) return;
+    console.log("Still looking for...", stillLookingFor);
+    // Player won
+    setTimeEnd(new Date());
+    addMessage("You won!");
+    highscoreSetOpen(true);
+    setIsGameOver(true);
   }
 
   function calculateCrosshairCoordinates(e) {
@@ -135,14 +158,19 @@ function Game({ puzzle }) {
   }
 
   return (
-    <div>
+    <>
+      {isGameOver ? <NewHighscore time={timeEnd - timeStart} /> : null}
+
+      <GameOver isGameOver={isGameOver} />
+
       <Messages messages={messages} removeMessage={removeMessage} />
 
-      <HighscoreList />
+      <HighscoreList open={highscoreOpen} setOpen={highscoreSetOpen} />
 
       <Stopwatch
         timeStart={timeStart}
         timeEnd={timeEnd}
+        isGameOver={isGameOver}
         onClick={togglePopOut}
       />
       <ObjectCounter searchList={searchList} onClick={togglePopOut} />
@@ -167,7 +195,7 @@ function Game({ puzzle }) {
         alt={puzzle.alt}
         onClick={calculateCrosshairCoordinates}
       />
-    </div>
+    </>
   );
 }
 

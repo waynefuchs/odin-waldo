@@ -1,7 +1,7 @@
 import "../style/ObjectCounter.css";
 
 function ObjectCounter({ onClick, searchList }) {
-  return searchList && searchList.length > 0 ? (
+  return searchList && searchList.filter((o) => !o.isFound).length > 0 ? (
     <>
       <button className="count-button" onClick={onClick}>
         {searchList.filter((o) => !o.isFound).length}

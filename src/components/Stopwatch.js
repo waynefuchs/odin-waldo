@@ -1,51 +1,37 @@
 import { useEffect, useState } from "react";
+import { useStopwatch } from "react-timer-hook";
 
 import "../style/Stopwatch.css";
 
-function Stopwatch({ timeStart, timeEnd }) {
-  // This timer variable is only for updating the timeObject display
-  const [timer, setTimer] = useState(0);
+function Stopwatch({ timeStart, timeEnd, isGameOver }) {
+  const { seconds, minutes, hours, days, isRunning, start, pause, reset } =
+    useStopwatch({ autoStart: true });
 
-  const getTimeDisplay = () => {
-    let delta = Math.floor((new Date() - timeStart) / 1000);
-    let display = false;
-
-    const days = Math.floor(delta / 86400);
-    delta -= days * 86400;
-    display ||= days > 0;
-    const textDays = display ? `${days}days` : null;
-
-    const hours = Math.floor(delta / 3600) % 24;
-    delta -= hours * 3600;
-    display ||= hours > 0;
-    const textHours = display ? `${hours}hours` : null;
-
-    const minutes = Math.floor(delta / 60) % 60;
-    delta -= minutes * 60;
-    display ||= minutes > 0;
-    const textMinutes = display ? `${minutes}m` : null;
-
-    const seconds = delta % 60;
-    display ||= seconds > 0;
-    const textSeconds = display ? `${seconds}s` : null;
-
-    return [textDays, textHours, textMinutes, textSeconds]
-      .filter((i) => i)
-      .join(" ");
-  };
-
-  // This updates the component every 1000ms, prompting a redraw
-  let timerInterval = undefined;
   useEffect(() => {
-    if (timerInterval) clearInterval(timerInterval);
-    if (timeEnd) return;
+    console.log("Game Is Over From Stopwatch!");
+    if (isGameOver) pause();
+    else start();
+  }, [isGameOver]);
 
-    timerInterval = setInterval(() => {
-      setTimer((timer) => getTimeDisplay());
-    }, 1000);
-  });
+  function formatTimeNumber(num, s) {
+    return num ? num + s : null;
+  }
 
-  return <div className="stopwatch">{timer}</div>;
+  function formatTime(days, hours, minutes, seconds) {
+    return [
+      formatTimeNumber(days, "d"),
+      formatTimeNumber(hours, "h"),
+      formatTimeNumber(minutes, "m"),
+      formatTimeNumber(seconds, "s"),
+    ]
+      .filter((v) => v && v != 0)
+      .join(" ");
+  }
+
+  // return isGameOver ? null : (
+  return (
+    <div className="stopwatch">{formatTime(days, hours, minutes, seconds)}</div>
+  );
 }
 
 export default Stopwatch;

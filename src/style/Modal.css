@@ -1,0 +1,11 @@
+div.modal {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+  background-color: var(--c-modalbg);
+}
