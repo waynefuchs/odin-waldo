@@ -56,13 +56,6 @@ function Game({ puzzle }) {
     setSearchList(searchObj);
   }
 
-  // TODO: Investigate the proper way to do this
-  // Check to see if the player won every time "searchList" is updated
-  useEffect(() => {
-    handleWinCondition();
-    // eslint-disable-next-line
-  }, [searchList]);
-
   // Handle fetching search data
   useEffect(() => {
     if (!puzzle?.id) return;
@@ -180,6 +173,7 @@ function Game({ puzzle }) {
 
   //////////////////////////////////////////////////////////////////////////////
   // Component Output
+  handleWinCondition();
   return (
     <>
       <NewHighscore

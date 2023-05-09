@@ -8,16 +8,6 @@ function Stopwatch({ isGameOver }) {
     autoStart: true,
   });
 
-  // TODO: Investigate the proper way to handle this
-  useEffect(() => {
-    if (isGameOver) pause();
-    else {
-      reset();
-      start();
-    }
-    // eslint-disable-next-line
-  }, [isGameOver]);
-
   function formatTimeNumber(num, s) {
     if (!num && s === "s") return "0s";
     return num ? num + s : null;
@@ -34,7 +24,16 @@ function Stopwatch({ isGameOver }) {
       .join(" ");
   }
 
-  // return isGameOver ? null : (
+  // Pause the timer when the game is over
+  // Resume the timer if reset
+  useEffect(() => {
+    if (isGameOver) pause();
+    else {
+      reset();
+      start();
+    }
+  }, [isGameOver, pause, reset, start]);
+
   return (
     <div className="stopwatch">{formatTime(days, hours, minutes, seconds)}</div>
   );
