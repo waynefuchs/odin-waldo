@@ -14,7 +14,6 @@
     - [Configure](#configure)
     - [Build the project for Local Hosting](#build-the-project-for-local-hosting)
     - [Build the project for Web Server](#build-the-project-for-web-server)
-      - [Host on a server](#host-on-a-server)
 
 # odin-waldo
 
@@ -97,8 +96,6 @@ npm run start
 ```
 
 ### Build the project for Web Server
-
-#### Host on a server
 
 ```bash
 npm run build
