@@ -1,6 +1,6 @@
 import { db } from "../firebase";
-import { addDoc, collection, doc, getDoc, getDocs } from "firebase/firestore";
-import { useEffect, useState } from "react";
+import { addDoc, collection } from "firebase/firestore";
+import { useState } from "react";
 
 import msToText from "../util/msToText";
 

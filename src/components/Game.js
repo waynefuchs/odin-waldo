@@ -45,20 +45,6 @@ function Game({ puzzle }) {
   const [newHighscoreOpen, setNewHighscoreOpen] = useState(false);
   const [highscoreOpen, setHighscoreOpen] = useState(false);
 
-  function resetGame() {
-    setIsGameOver(false);
-    setTimeStart(new Date());
-    setTimeEnd(undefined);
-    setIsCrosshairVisible(false);
-    setCrosshairCoordinates(undefinedCoordinates);
-    setPixelCoordinates(undefinedCoordinates);
-    setIsPopOutVisible(false);
-    setMessages([]);
-    setNewHighscoreOpen(false);
-    setHighscoreOpen(false);
-    fetchSearch(puzzle?.id);
-  }
-
   //////////////////////////////////////////////////////////////////////////////
   // Set-up
   async function fetchSearch(id) {
@@ -70,9 +56,11 @@ function Game({ puzzle }) {
     setSearchList(searchObj);
   }
 
+  // TODO: Investigate the proper way to do this
   // Check to see if the player won every time "searchList" is updated
   useEffect(() => {
     handleWinCondition();
+    // eslint-disable-next-line
   }, [searchList]);
 
   // Handle fetching search data
@@ -176,6 +164,22 @@ function Game({ puzzle }) {
     setHighscoreOpen(true);
   }
 
+  function resetGame() {
+    setIsGameOver(false);
+    setTimeStart(new Date());
+    setTimeEnd(undefined);
+    setIsCrosshairVisible(false);
+    setCrosshairCoordinates(undefinedCoordinates);
+    setPixelCoordinates(undefinedCoordinates);
+    setIsPopOutVisible(false);
+    setMessages([]);
+    setNewHighscoreOpen(false);
+    setHighscoreOpen(false);
+    fetchSearch(puzzle?.id);
+  }
+
+  //////////////////////////////////////////////////////////////////////////////
+  // Component Output
   return (
     <>
       <GameOver isGameOver={isGameOver} />

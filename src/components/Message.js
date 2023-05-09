@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import "../style/Message.css";
 
 function Message({ index, message, removeMessage }) {

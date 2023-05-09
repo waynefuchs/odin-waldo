@@ -1,18 +1,21 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useStopwatch } from "react-timer-hook";
 
 import "../style/Stopwatch.css";
 
-function Stopwatch({ timeStart, timeEnd, isGameOver }) {
-  const { seconds, minutes, hours, days, isRunning, start, pause, reset } =
-    useStopwatch({ autoStart: true });
+function Stopwatch({ isGameOver }) {
+  const { seconds, minutes, hours, days, start, pause, reset } = useStopwatch({
+    autoStart: true,
+  });
 
+  // TODO: Investigate the proper way to handle this
   useEffect(() => {
     if (isGameOver) pause();
     else {
       reset();
       start();
     }
+    // eslint-disable-next-line
   }, [isGameOver]);
 
   function formatTimeNumber(num, s) {
@@ -27,7 +30,7 @@ function Stopwatch({ timeStart, timeEnd, isGameOver }) {
       formatTimeNumber(minutes, "m"),
       formatTimeNumber(seconds, "s"),
     ]
-      .filter((v) => v && v != 0)
+      .filter((v) => v && v !== 0)
       .join(" ");
   }
 
