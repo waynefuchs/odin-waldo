@@ -1,5 +1,5 @@
-import { useState, useCallback, useEffect } from "react";
-import { collection, doc, getDoc, getDocs } from "firebase/firestore";
+import { useState, useEffect } from "react";
+import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
 
 import Crosshair from "./Crosshair";
@@ -30,20 +30,34 @@ const isClickCloseEnough = (clickCoord, hiddenObject) => {
 function Game({ puzzle }) {
   //////////////////////////////////////////////////////////////////////////////
   // Variable Definition
+  const undefinedCoordinates = createCoordinateObject(undefined, undefined);
   const [isGameOver, setIsGameOver] = useState(false);
   const [timeStart, setTimeStart] = useState(new Date());
   const [timeEnd, setTimeEnd] = useState(undefined);
   const [isCrosshairVisible, setIsCrosshairVisible] = useState(false);
-  const [crosshairCoordinates, setCrosshairCoordinates] = useState(
-    createCoordinateObject(undefined, undefined)
-  );
-  const [pixelCoordinates, setPixelCoordinates] = useState(
-    createCoordinateObject(undefined, undefined)
-  );
+  const [crosshairCoordinates, setCrosshairCoordinates] =
+    useState(undefinedCoordinates);
+  const [pixelCoordinates, setPixelCoordinates] =
+    useState(undefinedCoordinates);
   const [searchList, setSearchList] = useState([]);
   const [isPopOutVisible, setIsPopOutVisible] = useState(false);
   const [messages, setMessages] = useState([]);
-  const [highscoreOpen, highscoreSetOpen] = useState(false);
+  const [newHighscoreOpen, setNewHighscoreOpen] = useState(false);
+  const [highscoreOpen, setHighscoreOpen] = useState(false);
+
+  function resetGame() {
+    setIsGameOver(false);
+    setTimeStart(new Date());
+    setTimeEnd(undefined);
+    setIsCrosshairVisible(false);
+    setCrosshairCoordinates(undefinedCoordinates);
+    setPixelCoordinates(undefinedCoordinates);
+    setIsPopOutVisible(false);
+    setMessages([]);
+    setNewHighscoreOpen(false);
+    setHighscoreOpen(false);
+    fetchSearch(puzzle?.id);
+  }
 
   //////////////////////////////////////////////////////////////////////////////
   // Set-up
@@ -93,15 +107,15 @@ function Game({ puzzle }) {
 
   function handleWinCondition() {
     if (!searchList || searchList.length <= 0) return;
-    console.dir(searchList);
     const stillLookingFor = searchList.filter((i) => !i.isFound);
     if (stillLookingFor.length > 0) return;
-    console.log("Still looking for...", stillLookingFor);
+
     // Player won
     setTimeEnd(new Date());
     addMessage("You won!");
-    highscoreSetOpen(true);
+    // setHighscoreOpen(true);
     setIsGameOver(true);
+    setNewHighscoreOpen(true);
   }
 
   function calculateCrosshairCoordinates(e) {
@@ -157,22 +171,28 @@ function Game({ puzzle }) {
     setMessages(messages.filter((m, i) => i !== Number(index)));
   }
 
+  function newHighscoreSubmitted() {
+    setNewHighscoreOpen(false);
+    setHighscoreOpen(true);
+  }
+
   return (
     <>
-      {isGameOver ? <NewHighscore time={timeEnd - timeStart} /> : null}
-
       <GameOver isGameOver={isGameOver} />
+
+      <NewHighscore
+        isGameOver={isGameOver}
+        newHighscoreOpen={newHighscoreOpen}
+        time={timeEnd - timeStart}
+        onClose={newHighscoreSubmitted}
+      />
+
+      <HighscoreList open={highscoreOpen} resetGame={resetGame} />
 
       <Messages messages={messages} removeMessage={removeMessage} />
 
-      <HighscoreList open={highscoreOpen} setOpen={highscoreSetOpen} />
+      <Stopwatch key={timeStart} isGameOver={isGameOver} />
 
-      <Stopwatch
-        timeStart={timeStart}
-        timeEnd={timeEnd}
-        isGameOver={isGameOver}
-        onClick={togglePopOut}
-      />
       <ObjectCounter searchList={searchList} onClick={togglePopOut} />
 
       <Crosshair

@@ -1,6 +1,7 @@
 function msToText(time) {
+  if (time < 0) time = 0;
+
   let delta = Math.floor(time / 1000);
-  let ms = Number(time / 1000 - delta).toPrecision(3) * 1000;
   let display = false;
 
   const days = Math.floor(delta / 86400);
@@ -19,8 +20,7 @@ function msToText(time) {
   const textMinutes = display ? `${minutes}m` : null;
 
   const seconds = delta % 60;
-  display ||= seconds > 0;
-  const textSeconds = display ? `${seconds}.${ms}s` : null;
+  const textSeconds = `${seconds}s`;
 
   return [textDays, textHours, textMinutes, textSeconds]
     .filter((i) => i)

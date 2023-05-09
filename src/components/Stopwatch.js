@@ -8,12 +8,15 @@ function Stopwatch({ timeStart, timeEnd, isGameOver }) {
     useStopwatch({ autoStart: true });
 
   useEffect(() => {
-    console.log("Game Is Over From Stopwatch!");
     if (isGameOver) pause();
-    else start();
+    else {
+      reset();
+      start();
+    }
   }, [isGameOver]);
 
   function formatTimeNumber(num, s) {
+    if (!num && s === "s") return "0s";
     return num ? num + s : null;
   }
 

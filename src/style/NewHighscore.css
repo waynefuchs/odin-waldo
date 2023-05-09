@@ -15,17 +15,15 @@
   align-items: center;
 }
 
-.new-highscore > button {
-  background-color: var(--c-2b);
-  color: inherit;
+.new-highscore > button:hover {
+  background-color: var(--c-2a);
+}
+
+.new-highscore > input {
   border: none;
   padding: 0.25em;
   font: inherit;
-  width: 100%;
   border-radius: 1em;
-  white-space: nowrap;
-}
 
-.new-highscore > button:hover {
-  background-color: var(--c-2a);
+  text-align: center;
 }

@@ -1,25 +1,20 @@
-dialog {
+.highscore-list {
   /* background-color: green; */
   /* offset-anchor: 50% 50%; */
   /* top: 50%; */
   display: flex;
   flex-direction: column;
-  margin-top: 50%;
-  margin-bottom: 50%;
-}
+  align-items: center;
 
-dialog > button {
-  font: inherit;
-  font-size: large;
-  padding: 0.5em;
-  border-radius: 1em;
-}
-
-dialog > button:hover {
   background-color: var(--c-1a);
+  padding: var(--padding);
 }
 
-dialog > ul {
+.highscore-list > h1 {
+  margin: 0;
+}
+
+.highscore-list > ul {
   list-style: none;
   padding: 0;
 
@@ -29,6 +24,6 @@ dialog > ul {
   gap: var(--gap);
 }
 
-dialog.hidden {
+.highscore-list.hidden {
   display: none;
 }

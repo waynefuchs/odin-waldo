@@ -1,10 +1,12 @@
 import "../style/Highscore.css";
 
+import msToText from "../util/msToText";
+
 function Highscore({ person }) {
   return (
     <li>
       <div>{person.name}</div>
-      <div>{Number(person.time).toFixed(2)} s</div>
+      <div>{msToText(Number(person.time))}</div>
     </li>
   );
 }

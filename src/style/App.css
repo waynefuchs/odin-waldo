@@ -36,3 +36,18 @@ main {
   color: var(--c-1a);
   text-decoration: line-through;
 }
+
+button {
+  background-color: var(--c-1b);
+  color: inherit;
+  padding: 0.5em;
+  font: inherit;
+  width: 100%;
+  border-radius: 1em;
+  white-space: nowrap;
+  border: var(--border) solid var(--c-light);
+}
+
+button:hover {
+  background-color: var(--c-1a);
+}
