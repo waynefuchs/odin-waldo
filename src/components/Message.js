@@ -1,6 +1,14 @@
+import { useStopwatch } from "react-timer-hook";
+
 import "../style/Message.css";
 
 function Message({ index, message, removeMessage }) {
+  const autoClose = false;
+  const autoCloseTimeout = 3;
+  const stopwatch = useStopwatch({
+    autoStart: true,
+  });
+
   function handleClick(e) {
     try {
       removeMessage(e.target.dataset.index);
@@ -10,6 +18,11 @@ function Message({ index, message, removeMessage }) {
         removeMessage
       );
     }
+  }
+
+  // Set autoClose to true
+  if (autoClose && stopwatch?.seconds >= autoCloseTimeout) {
+    removeMessage(index);
   }
 
   return (
