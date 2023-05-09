@@ -1,4 +1,5 @@
 - [odin-waldo](#odin-waldo)
+  - [Artwork](#artwork)
   - [Screenshots](#screenshots)
     - [Main Site](#main-site)
     - [Object Selection](#object-selection)
@@ -14,11 +15,14 @@
     - [Build the project for Local Hosting](#build-the-project-for-local-hosting)
     - [Build the project for Web Server](#build-the-project-for-web-server)
       - [Host on a server](#host-on-a-server)
-  - [TODO](#todo)
 
 # odin-waldo
 
 A "Hidden Object" searching game, similar to "Where's Waldo"
+
+## Artwork
+
+I found this amazing image by Sammy Hayward on the [Wimmelbilder Subreddit](https://www.reddit.com/r/wimmelbilder/comments/12n75ye/midnight_metropolis_digital_by_me/). You can buy some of his stuff on his [Etsy](https://www.etsy.com/shop/SRHillustration) and see more of his art on his [Instagram](https://www.instagram.com/srh_illustration/).
 
 ## Screenshots
 
@@ -101,11 +105,3 @@ npm run build
 ```
 
 This creates a `build` directory with the finished project in it. Upload this to a live webserver.
-
-## TODO
-
-- Remove unused components
-- Solve useEffect linting error
-- Take new screenshots
-- Write a bit of description here
-- Give the artist credit here
