@@ -3,7 +3,6 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
 
 import Crosshair from "./Crosshair";
-import GameOver from "./GameOver";
 import GameFooter from "./GameFooter";
 import HighscoreList from "./HighscoreList";
 import Messages from "./Messages";
@@ -183,8 +182,6 @@ function Game({ puzzle }) {
   // Component Output
   return (
     <>
-      <GameOver isGameOver={isGameOver} />
-
       <NewHighscore
         isGameOver={isGameOver}
         newHighscoreOpen={newHighscoreOpen}
