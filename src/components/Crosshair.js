@@ -1,5 +1,3 @@
-// import { useState } from "react";
-// import PopupSelection from "./PopupSelection";
 import "../style/Crosshair.css";
 
 function Crosshair({ id, isVisible, coord }) {
