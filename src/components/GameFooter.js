@@ -3,9 +3,9 @@ import { icon } from "@fortawesome/fontawesome-svg-core/import.macro";
 
 import "../style/GameFooter.css";
 
-function GameFooter(props) {
-  const author = props?.credit?.author ? props.credit.author : "unknown";
-  const title = props?.credit?.title ? props.credit.title : "untitled";
+function GameFooter({ credit }) {
+  const author = credit?.author ? credit.author : "unknown";
+  const title = credit?.title ? credit.title : "untitled";
   const socialIcons = {
     etsy: <FontAwesomeIcon icon={icon({ name: "etsy", style: "brands" })} />,
     instagram: (
@@ -17,15 +17,11 @@ function GameFooter(props) {
   };
 
   function getSocial(social) {
-    if (!props.credit) return null;
-    if (!props.credit[social]) return null;
+    if (!credit) return null;
+    if (!credit[social]) return null;
 
     return (
-      <a
-        className="socials"
-        key={props.credit[social]}
-        href={props.credit[social]}
-      >
+      <a className="socials" key={credit[social]} href={credit[social]}>
         {socialIcons[social]}
       </a>
     );

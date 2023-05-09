@@ -3,16 +3,17 @@ import { collection, getDocs } from "firebase/firestore";
 import { db } from "../firebase";
 
 import Crosshair from "./Crosshair";
+import GameOver from "./GameOver";
+import GameFooter from "./GameFooter";
 import HighscoreList from "./HighscoreList";
 import Messages from "./Messages";
+import NewHighscore from "./NewHighscore";
 import ObjectCounter from "./ObjectCounter";
 import ObjectPopOut from "./ObjectPopOut";
 import Stopwatch from "./Stopwatch";
 
 import "../style/Colors.css";
 import "../style/Image.css";
-import GameOver from "./GameOver";
-import NewHighscore from "./NewHighscore";
 
 function createCoordinateObject(x, y) {
   return { x, y };
@@ -219,6 +220,8 @@ function Game({ puzzle }) {
         alt={puzzle.alt}
         onClick={calculateCrosshairCoordinates}
       />
+
+      <GameFooter credit={puzzle} />
     </>
   );
 }
