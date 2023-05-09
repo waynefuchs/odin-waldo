@@ -14,7 +14,14 @@ function Message({ index, message, removeMessage }) {
 
   return (
     <li className="message" data-index={index} onClick={handleClick}>
-      {message}
+      <div className="message-data">{message}</div>
+      <button
+        className="close-message"
+        data-index={index}
+        onClick={handleClick}
+      >
+        X
+      </button>
     </li>
   );
 }

@@ -2,11 +2,28 @@
   background-color: var(--c-1b);
   border: var(--border) solid var(--c-1a);
   padding: var(--padding);
+  padding-right: 0.5em;
   width: 33vw;
   text-align: center;
   border-radius: 2em;
+
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
-.message.success {
-  background-color: var(--c-1a);
+.message-data {
+  width: 100%;
+}
+
+.message > button {
+  position: relative;
+  top: -3em;
+  right: -1.5em;
+  width: 3em;
+  height: 3em;
+  border-radius: 50%;
+}
+.message > button:hover {
+  background-color: var(--c-2a);
 }
