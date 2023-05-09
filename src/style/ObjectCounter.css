@@ -1,16 +1,8 @@
-header {
-  position: fixed;
-  background: none;
-
-  display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  width: 100%;
-
-  font-size: xx-large;
-}
-
 .count-button {
+  position: fixed;
+  top: 0;
+  right: 0;
+
   background-color: var(--c-2a);
   width: 2em;
   height: 2em;
@@ -23,19 +15,15 @@ header {
   outline: inherit;
 
   font: inherit;
+  font-size: xx-large;
 }
 
-.count-button,
-.stopwatch {
+.count-button {
   margin: clamp(var(--margin-min), var(--margin-ideal), var(--margin-max));
 }
 
 /* Small devices */
 @media screen and (max-width: 767px) {
-  header {
-    font-size: large;
-  }
-
   .count-button {
     border: var(--border-phone) solid var(--c-light);
   }

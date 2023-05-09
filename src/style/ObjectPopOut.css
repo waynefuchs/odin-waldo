@@ -58,6 +58,10 @@ ul.object-pop-out > li > p {
   padding: var(--border);
 }
 
+ul.object-pop-out > li > p.found {
+  text-decoration: line-through;
+}
+
 ul.object-pop-out > li > button {
   background-color: var(--c-1b);
   border-radius: 5px;

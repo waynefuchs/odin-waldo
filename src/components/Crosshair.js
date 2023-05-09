@@ -1,21 +1,13 @@
-import { useState } from "react";
-import PopupSelection from "./PopupSelection";
+// import { useState } from "react";
+// import PopupSelection from "./PopupSelection";
 import "../style/Crosshair.css";
 
-function Crosshair(props) {
-  const id = `crosshair-${props.id}`;
-  const style = {
-    left: props.coord.x,
-    top: props.coord.y,
-  };
+function Crosshair({ id, isVisible, coord }) {
+  const crosshairId = id ? `crosshair-${id}` : "crosshair";
+  const style = { left: coord.x, top: coord.y };
+  const className = isVisible ? "crosshair visible" : "crosshair";
 
-  return (
-    <div
-      id={id}
-      className={props.visible ? "crosshair visible" : "crosshair"}
-      style={style}
-    ></div>
-  );
+  return <div id={crosshairId} className={className} style={style}></div>;
 }
 
 export default Crosshair;

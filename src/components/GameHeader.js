@@ -8,7 +8,7 @@ function GameHeader(props) {
 
   return (
     <header>
-      <Stopwatch timeObject={props.timeObject} />
+      <Stopwatch timeObject={props.timeObject} isGameOver={props.isGameOver} />
       {props.searchList && props.searchList.length > 0 ? (
         <>
           <button className="count-button" onClick={handlePopOutClick}>

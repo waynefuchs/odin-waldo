@@ -1,35 +1,36 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useState } from "react";
-import { icon } from "@fortawesome/fontawesome-svg-core/import.macro";
+import ItemGuess from "./ItemGuess";
 import "../style/ObjectPopOut.css";
 
-function ObjectPopOut(props) {
-  function handleClosePopOut(e) {
-    props.setIsVisible(false);
+function ObjectPopOut({
+  searchList,
+  isCrosshairVisible,
+  isVisible,
+  onClose,
+  onMakeGuess,
+}) {
+  function handleGuess(e) {
+    onMakeGuess(e.target.dataset.id);
   }
 
+  if (!searchList) return null;
   return (
     <div
-      className={["object-pop-out-modal", props.isVisible ? "" : "hidden"].join(
-        " "
-      )}
+      className={["object-pop-out-modal", isVisible ? "" : "hidden"].join(" ")}
     >
-      <button className="close-button" onClick={handleClosePopOut}>
+      <button className="close-button" onClick={onClose}>
         X
       </button>
       <h1>Search For</h1>
       <ul className="object-pop-out">
-        {props.searchList
-          ? props.searchList.map((i) => (
-              <li key={i.id}>
-                {props.isCrosshairVisible ? (
-                  <button>{i.label}</button>
-                ) : (
-                  <p>{i.label}</p>
-                )}
-              </li>
-            ))
-          : null}
+        {searchList.map((item) => (
+          <li key={item.id}>
+            <ItemGuess
+              item={item}
+              isCrosshairVisible={isCrosshairVisible}
+              handleGuess={handleGuess}
+            />
+          </li>
+        ))}
       </ul>
     </div>
   );

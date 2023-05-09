@@ -1,0 +1,12 @@
+.message {
+  background-color: var(--c-1b);
+  border: var(--border) solid var(--c-1a);
+  padding: var(--padding);
+  width: 33vw;
+  text-align: center;
+  border-radius: 2em;
+}
+
+.message.success {
+  background-color: var(--c-1a);
+}

@@ -5,4 +5,7 @@
   --margin-max: 20px;
   --margin-ideal: 15px;
   --padding: 2em;
+  --gap: 1em;
+
+  user-select: none;
 }
