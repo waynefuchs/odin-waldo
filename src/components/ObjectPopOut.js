@@ -1,4 +1,4 @@
-import ItemGuess from "./ItemGuess";
+import ObjectPopOutItem from "./ObjectPopOutItem";
 import "../style/ObjectPopOut.css";
 
 function ObjectPopOut({
@@ -24,7 +24,7 @@ function ObjectPopOut({
       <ul className="object-pop-out">
         {searchList.map((item) => (
           <li key={item.id}>
-            <ItemGuess
+            <ObjectPopOutItem
               item={item}
               isCrosshairVisible={isCrosshairVisible}
               handleGuess={handleGuess}
